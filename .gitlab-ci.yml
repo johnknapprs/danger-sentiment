@@ -24,6 +24,6 @@ rubocop:
 #   script:
 #     - rspec spec
 
-job:
+danger:
   script:
     - bundle exec danger
