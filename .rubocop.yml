@@ -1,17 +1,66 @@
-# Defaults can be found here: https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+Style/MultipleComparison:
+  Enabled: false
 
-# If you don't like these settings, just delete this file :)
-
-AllCops:
-  TargetRubyVersion: 2.0
-
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-  Enabled: true
+Style/PercentLiteralDelimiters:
+  Enabled: false
 
 # kind_of? is a good way to check a type
 Style/ClassCheck:
   EnforcedStyle: kind_of?
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# This doesn't work with older versions of Ruby (pre 2.4.0)
+Style/SafeNavigation:
+  Enabled: false
+
+# .length == 0 is also good, we don't always want .zero?
+Style/NumericPredicate:
+  Enabled: false
+
+# this would cause errors with long lanes
+Metrics/BlockLength:
+  Enabled: false
+
+# this is a bit buggy
+Metrics/ModuleLength:
+  Enabled: false
+
+# certificate_1 is an okay variable name
+Naming/VariableNumber:
+  Enabled: false
+
+# This is used a lot across the fastlane code base for config files
+Style/MethodMissingSuper:
+  Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+#
+#   File.chmod(0777, f)
+#
+# is easier to read than
+#
+#   File.chmod(0o777, f)
+#
+Style/NumericLiteralPrefix:
+  Enabled: false
+
+#
+# command = (!clean_expired.nil? || !clean_pattern.nil?) ? CLEANUP : LIST
+#
+# is easier to read than
+#
+# command = !clean_expired.nil? || !clean_pattern.nil? ? CLEANUP : LIST
+#
+Style/TernaryParentheses:
+  Enabled: false
+
+# sometimes it is useful to have those empty methods
+Style/EmptyMethod:
+  Enabled: false
 
 # It's better to be more explicit about the type
 Style/BracesAroundHashParameters:
@@ -23,7 +72,7 @@ Lint/UselessAssignment:
     - '**/spec/**/*'
 
 # We could potentially enable the 2 below:
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Enabled: false
 
 Layout/AlignHash:
@@ -37,16 +86,50 @@ Layout/DotPosition:
 Style/DoubleNegation:
   Enabled: false
 
+# Prevent to replace [] into %i
+Style/SymbolArray:
+  Enabled: false
+
+# We still support Ruby 2.0.0
+Layout/IndentHeredoc:
+  Enabled: false
+
+# This cop would not work fine with rspec
+Style/MixinGrouping:
+  Exclude:
+    - '**/spec/**/*'
+
+# Sometimes we allow a rescue block that doesn't contain code
+Lint/HandleExceptions:
+  Enabled: false
+
 # Cop supports --auto-correct.
 Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+# Needed for $verbose
+Style/GlobalVars:
   Enabled: false
 
 # We want to allow class Fastlane::Class
 Style/ClassAndModuleChildren:
   Enabled: false
 
+# $? Exit
+Style/SpecialGlobalVars:
+  Enabled: false
+
 Metrics/AbcSize:
-  Max: 60
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
 
 # The %w might be confusing for new users
 Style/WordArray:
@@ -70,10 +153,8 @@ Style/AndOr:
 
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 350
+  Max: 320
 
-Metrics/CyclomaticComplexity:
-  Max: 17
 
 # Configuration parameters: AllowURI, URISchemes.
 Metrics/LineLength:
@@ -81,13 +162,17 @@ Metrics/LineLength:
 
 # Configuration parameters: CountKeywordArgs.
 Metrics/ParameterLists:
-  Max: 10
+  Max: 17
 
 Metrics/PerceivedComplexity:
   Max: 18
 
 # Sometimes it's easier to read without guards
 Style/GuardClause:
+  Enabled: false
+
+# We allow both " and '
+Style/StringLiterals:
   Enabled: false
 
 # something = if something_else
@@ -99,54 +184,68 @@ Style/ConditionalAssignment:
 Style/RedundantSelf:
   Enabled: false
 
-Metrics/MethodLength:
-  Max: 60
+# e.g.
+# def self.is_supported?(platform)
+# we may never use `platform`
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+# the let(:key) { ... }
+Lint/ParenthesesAsGroupedExpression:
+  Exclude:
+    - '**/spec/**/*'
+
+# This would reject is_ in front of methods
+# We use `is_supported?` everywhere already
+Naming/PredicateName:
+  Enabled: false
+
+# We allow the $
+Style/PerlBackrefs:
+  Enabled: false
+
+# Disable '+ should be surrounded with a single space' for xcodebuild_spec.rb
+Layout/SpaceAroundOperators:
+  Exclude:
+    - '**/spec/actions_specs/xcodebuild_spec.rb'
+
+AllCops:
+  TargetRubyVersion: 2.4
+  Include:
+    - '**/fastlane/Fastfile'
+  Exclude:
+    - '**/lib/assets/custom_action_template.rb'
+    - './vendor/**/*'
+
+# They have not to be snake_case
+Naming/FileName:
+  Exclude:
+    - '**/Dangerfile'
+    - '**/Brewfile'
+    - '**/Gemfile'
+    - '**/Podfile'
+    - '**/Rakefile'
+    - '**/Fastfile'
+    - '**/Deliverfile'
+    - '**/Snapfile'
+    - '**/*.gemspec'
 
 # We're not there yet
 Style/Documentation:
+  Enabled: false
+
+# Added after upgrade to 0.38.0
+Style/MutableConstant:
+  Enabled: false
+
+# length > 0 is good
+Style/ZeroLengthPredicate:
   Enabled: false
 
 # Adds complexity
 Style/IfInsideElse:
   Enabled: false
 
-# danger specific
-
-Style/BlockComments:
-  Enabled: false
-
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
-
-# FIXME: 25
-Metrics/BlockLength:
-  Max: 345
-  Exclude:
-    - "**/*_spec.rb"
-
-Style/MixinGrouping:
-  Enabled: false
-
-Style/FileName:
-  Enabled: false
-
-Layout/IndentHeredoc:
-  Enabled: false
-
-Style/SpecialGlobalVars:
-  Enabled: false
-
-PercentLiteralDelimiters:
-  PreferredDelimiters:
-    "%":  ()
-    "%i": ()
-    "%q": ()
-    "%Q": ()
-    "%r": "{}"
-    "%s": ()
-    "%w": ()
-    "%W": ()
-    "%x": ()
-
-Security/YAMLLoad:
+# Sometimes we just want to 'collect'
+Style/CollectionMethods:
   Enabled: false

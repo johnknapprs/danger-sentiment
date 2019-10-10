@@ -1,1 +1,1 @@
-require "sentiment/gem_version"
+require 'sentiment/gem_version'

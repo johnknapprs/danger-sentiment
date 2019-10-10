@@ -1,1 +1,1 @@
-require "sentiment/plugin"
+require 'sentiment/plugin'
