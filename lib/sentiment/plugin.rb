@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Danger
   # This is your plugin class. Any attributes or methods you expose here will
   # be available from within your Dangerfile.
@@ -26,7 +28,19 @@ module Danger
     # @return   [Array<String>]
     #
     def warn_on_mondays
-      warn 'Trying to merge code on a Monday' if Date.today.wday == 1
+      warn "Trying to merge code on a Monday" # if Date.today.wday == 1
+    end
+
+    private
+
+    def sentiment(text_content)
+      require 'google/cloud/language'
+
+      language = Google::Cloud::Language.new
+
+      response = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
+
+      response.document_sentiment
     end
   end
 end

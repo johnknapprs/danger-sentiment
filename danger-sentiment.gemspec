@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.version       = Sentiment::VERSION
   spec.authors       = ['John Knapp']
   spec.email         = ['knappj2@gmail.com']
-  spec.description   = 'A short description of danger-sentiment.'
-  spec.summary       = 'A longer description of danger-sentiment.'
-  spec.homepage      = 'https://github.com/johnknapprs/danger-sentiment'
+  spec.description   = %q{A short description of danger-sentiment.}
+  spec.summary       = %q{A longer description of danger-sentiment.}
+  spec.homepage      = 'https://gitlab.com/petrosichor/danger-sentiment'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
@@ -25,18 +25,18 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
 
   # Testing support
-  spec.add_development_dependency 'rspec', '~> 3.4'
+  spec.add_development_dependency 'rspec' # , '~> 3.4'
 
   # Linting code and docs
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'yard'
 
   # Makes testing easy via `bundle exec guard`
-  spec.add_development_dependency 'guard', '~> 2.14'
-  spec.add_development_dependency 'guard-rspec', '~> 4.7'
+  spec.add_development_dependency 'guard' # , '~> 2.14'
+  spec.add_development_dependency 'guard-rspec' # , '~> 4.7'
 
   # If you want to work on older builds of ruby
-  spec.add_development_dependency 'listen', '3.0.7'
+  spec.add_development_dependency 'listen' # , '3.0.7'
 
   # This gives you the chance to run a REPL inside your tests
   # via:

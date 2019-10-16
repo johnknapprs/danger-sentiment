@@ -1,0 +1,1 @@
+sentiment.warn_on_mondays
