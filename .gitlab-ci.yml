@@ -16,13 +16,9 @@ before_script:
   - bundle install -j $(nproc) --path vendor  # Install dependencies into ./vendor/ruby
 
 # Optional - Delete if not using `rubocop`
-rubocop:
+test:
   script:
-    - bundle exec rubocop
-
-# rspec:
-#   script:
-#     - rspec spec
+    - bundle exec rake
 
 danger:
   script:
