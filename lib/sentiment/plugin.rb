@@ -36,10 +36,15 @@ module Danger
       end
     end
 
+    # This is a descriptiong of this method
+    # @return  [void]
     def credentials_json(value = "#{ENV['HOME']}/key.json")
       File.exist?(value)
     end
 
+    # This is a descriptiong of this method
+    # https://github.com/dbgrandi/danger-prose/blob/v2.0.0/lib/danger_plugin.rb#L40#-L41
+    # @return  [void]
     def warn_on_mondays
       warn "Trying to merge code on a Monday" # if Date.today.wday == 1
     end

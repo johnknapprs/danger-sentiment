@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = Sentiment::VERSION
   spec.authors       = ['John Knapp']
   spec.email         = ['knappj2@gmail.com']
-  spec.description   = %q{A short description of danger-sentiment.}
-  spec.summary       = %q{A longer description of danger-sentiment.}
+  spec.description   = 'Stop saying "you\'re an asshole" in code review'
+  spec.summary       = 'Sentiment Analysis using Google Cloud Engine'
   spec.homepage      = 'https://gitlab.com/petrosichor/danger-sentiment'
   spec.license       = 'MIT'
 

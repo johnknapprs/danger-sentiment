@@ -16,7 +16,7 @@ module Danger
 
         # mock the PR data
         # you can then use this, eg. github.pr_author, later in the spec
-        json = File.read(File.dirname(__FILE__) + '/support/fixtures/github_pr.json')
+        json = File.read(File.dirname(__FILE__) + '/support/fixtures/gitlab_pr.json')
         allow(@my_plugin.github).to receive(:pr_json).and_return(json)
       end
 
