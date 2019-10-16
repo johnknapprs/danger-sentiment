@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Danger
+  require "google/cloud/language"
+
   # This is your plugin class. Any attributes or methods you expose here will
   # be available from within your Dangerfile.
   #
@@ -27,6 +29,17 @@ module Danger
     # A method that you can call from your Dangerfile
     # @return   [Array<String>]
     #
+
+    class MissingConfiguredError < StandardError
+      def initialize(msg = 'You must call sentiment.configure before sentiment.evaluate can be used')
+        super
+      end
+    end
+
+    def credentials_json(value = "#{ENV['HOME']}/key.json")
+      File.exist?(value)
+    end
+
     def warn_on_mondays
       warn "Trying to merge code on a Monday" # if Date.today.wday == 1
     end
@@ -41,6 +54,18 @@ module Danger
       response = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
 
       response.document_sentiment
+    end
+
+    def analyze
+      warn('found key.json in home directory, attempting to authenticate') unless credentials_json
+      language = Google::Cloud::Language.new
+
+      text_content = "Yukihiro Matsumoto is great!"
+      response     = language.analyze_sentiment content: text_content,
+                                                type: :PLAIN_TEXT
+      sentiment = response.document_sentiment
+
+      markdown "Score: #{sentiment.score}"
     end
   end
 end
