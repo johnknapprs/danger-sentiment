@@ -26,6 +26,7 @@ plugin_lint:
 
 rspec:
   script:
+    - echo $DANGER_GITLAB_API_TOKEN
     - bundle exec rspec
 
 danger:
