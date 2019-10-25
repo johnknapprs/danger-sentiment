@@ -23,7 +23,7 @@ module Danger
 
         @my_plugin.warn_on_mondays
 
-        expect(@dangerfile.status_report[:warnings]).to eq(['Trying to merge code on a Monday'])
+        expect(@dangerfile.status_report[:warnings]).to eq(['Trying to  code on a Monday'])
       end
 
       it 'Does nothing on a tuesday' do
