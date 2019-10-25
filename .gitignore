@@ -6,3 +6,4 @@ pkg
 Gemfile.lock
 
 fastlane/report.xml
+fastlane/reports/**
