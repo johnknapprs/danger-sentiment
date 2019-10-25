@@ -1,5 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'danger-gitlab'
 # Specify your gem's dependencies in danger-sentiment.gemspec
 gemspec
+
+gem 'danger'
+gem 'danger-junit'
+
+gem 'fastlane'
+gem 'fastlane-plugin-ruby'
+
+gem 'rspec_junit_formatter'

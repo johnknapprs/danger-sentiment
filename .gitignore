@@ -4,3 +4,5 @@ pkg
 .yardoc
 
 Gemfile.lock
+
+fastlane/report.xml

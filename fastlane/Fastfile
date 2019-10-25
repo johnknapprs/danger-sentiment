@@ -1,0 +1,16 @@
+before_all do
+end
+
+lane :pipeline do
+  sh('bundle exec rake spec')
+end
+
+after_all do
+  next unless is_ci?
+
+  danger
+end
+
+error do |error|
+  puts error
+end

@@ -46,7 +46,7 @@ module Danger
     # https://github.com/dbgrandi/danger-prose/blob/v2.0.0/lib/danger_plugin.rb#L40#-L41
     # @return  [void]
     def warn_on_mondays
-      warn "Trying to merge code on a Monday" # if Date.today.wday == 1
+      warn "Trying to merge code on a Monday" if Date.today.wday == 1
     end
 
     private

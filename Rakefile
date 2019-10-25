@@ -2,7 +2,16 @@ require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
-RSpec::Core::RakeTask.new(:specs)
+RSpec::Core::RakeTask.new(:specs) do |task|
+  task.fail_on_error = false
+  rspec_flags = []
+  rspec_flags << '--no-drb'
+  rspec_flags << '-r rspec_junit_formatter --format RspecJunitFormatter'
+  rspec_flags << '-o fastlane/reports/junit.xml'
+  rspec_flags << '--format progress'
+
+  task.rspec_opts = rspec_flags.join(' ')
+end
 
 task default: :specs
 
