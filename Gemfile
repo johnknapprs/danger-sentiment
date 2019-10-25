@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'danger'
+gem 'danger-jira'
 gem 'danger-junit'
 
 gem 'fastlane'
