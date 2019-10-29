@@ -71,16 +71,29 @@ module Danger
       issues = create_comments_hash(issues)
 
       # warn('found key.json in home directory, attempting to authenticate') unless credentials_json
-      language = Google::Cloud::Language.new
+      # language = Google::Cloud::Language.new
+
+      # issues.each do |i|
+      #   text_content = i[:comment_body]
+
+      #   response     = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
+      #   sentiment    = response.document_sentiment
+
+      #   # markdown(text_content)
+      #   markdown("Username: #{i[:username]}\nMessage: #{text_content}\nScore: #{sentiment.score}\n")
+      # end
 
       issues.each do |i|
         text_content = i[:comment_body]
 
-        response     = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
-        sentiment    = response.document_sentiment
+        require 'rest-client'
 
-        # markdown(text_content)
-        markdown("Username: #{i[:username]}\nMessage: #{text_content}\nScore: #{sentiment.score}\n")
+        api_key = "fFRbdjVO8HizXGKI8CmRTdggkR3ej2V0FHQq7P3QD5g"
+
+        response = RestClient.post "https://apis.paralleldots.com/v5/emotion", { api_key: api_key, text: text_content }
+        response = JSON.parse(response)
+
+        markdown("Username: #{i[:username]}\nMessage: #{text_content}\nScore: #{response}\n")
       end
     end
 

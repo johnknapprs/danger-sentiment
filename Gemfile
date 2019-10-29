@@ -12,4 +12,5 @@ gem 'danger-junit'
 gem 'fastlane'
 gem 'fastlane-plugin-ruby'
 
+gem 'rest-client'
 gem 'rspec_junit_formatter'
