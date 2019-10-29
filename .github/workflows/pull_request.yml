@@ -23,5 +23,4 @@ jobs:
       env:
         DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
         SLACK_URL: ${{ secrets.SLACK_URL }}
-        PROJECT_ID: danger-sentiment
-        APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+        PARALLEL_DOTS_API_KEY: ${{secrets.PARALLEL_DOTS_API_KEY}}
