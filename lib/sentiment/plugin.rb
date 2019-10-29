@@ -49,6 +49,9 @@ module Danger
       warn "Trying to merge code on a Monday" if Date.today.wday == 1
     end
 
+    # Analyze all PR issues
+    # Will post a table of results per message/user
+
     def analyze
       require 'awesome_print'
 
@@ -71,7 +74,7 @@ module Danger
         formatted_response = []
         formatted_response << "| sentiment | score |"
         formatted_response << "|---|---|"
-        
+
         formatted_response << response['sentiment'].map do |k, v|
           "| #{k} | #{v} |"
         end
