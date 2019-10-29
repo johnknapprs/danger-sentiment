@@ -49,18 +49,6 @@ module Danger
       warn "Trying to merge code on a Monday" if Date.today.wday == 1
     end
 
-    # private
-
-    # def sentiment(text_content)
-    #   require 'google/cloud/language'
-
-    #   language = Google::Cloud::Language.new
-
-    #   response = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
-
-    #   response.document_sentiment
-    # end
-
     def analyze
       require 'awesome_print'
 
@@ -71,29 +59,26 @@ module Danger
       issues = create_comments_hash(issues)
 
       # warn('found key.json in home directory, attempting to authenticate') unless credentials_json
-      # language = Google::Cloud::Language.new
-
-      # issues.each do |i|
-      #   text_content = i[:comment_body]
-
-      #   response     = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
-      #   sentiment    = response.document_sentiment
-
-      #   # markdown(text_content)
-      #   markdown("Username: #{i[:username]}\nMessage: #{text_content}\nScore: #{sentiment.score}\n")
-      # end
 
       issues.each do |i|
-        text_content = i[:comment_body]
-
         require 'rest-client'
 
-        api_key = "fFRbdjVO8HizXGKI8CmRTdggkR3ej2V0FHQq7P3QD5g"
+        text_content = i[:comment_body]
 
-        response = RestClient.post "https://apis.paralleldots.com/v5/emotion", { api_key: api_key, text: text_content }
+        response = RestClient.post "https://apis.paralleldots.com/v4/sentiment", { api_key: ENV['PARALLEL_DOTS_API_KEY'], text: text_content }
         response = JSON.parse(response)
 
-        markdown("Username: #{i[:username]}\nMessage: #{text_content}\nScore: #{response}\n")
+        formatted_response = []
+        formatted_response << "| sentiment | score |"
+        formatted_response << "|---|---|"
+        
+        formatted_response << response['sentiment'].map do |k, v|
+          "| #{k} | #{v} |"
+        end
+
+        formatted_response = formatted_response.join("\n")
+
+        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n#{formatted_response}\n")
       end
     end
 
