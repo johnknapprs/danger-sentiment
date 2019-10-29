@@ -31,11 +31,11 @@ after_all do
   )
 end
 
-error do |_lane, error|
+error do |lane, exception|
   next unless is_ci?
 
   slack(
     success: false,
-    message: error
+    message: exception.message
   )
 end
