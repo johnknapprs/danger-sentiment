@@ -49,28 +49,55 @@ module Danger
       warn "Trying to merge code on a Monday" if Date.today.wday == 1
     end
 
-    private
+    # private
 
-    def sentiment(text_content)
-      require 'google/cloud/language'
+    # def sentiment(text_content)
+    #   require 'google/cloud/language'
 
-      language = Google::Cloud::Language.new
+    #   language = Google::Cloud::Language.new
 
-      response = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
+    #   response = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
 
-      response.document_sentiment
-    end
+    #   response.document_sentiment
+    # end
 
     def analyze
-      warn('found key.json in home directory, attempting to authenticate') unless credentials_json
+      require 'awesome_print'
+
+      repo_name = github.pr_json.base.repo.full_name
+
+      issues = github.api.issue_comments(repo_name, 1)
+      issues = remove_default_comments(issues)
+      issues = create_comments_hash(issues)
+
+      # warn('found key.json in home directory, attempting to authenticate') unless credentials_json
       language = Google::Cloud::Language.new
 
-      text_content = "Yukihiro Matsumoto is great!"
-      response     = language.analyze_sentiment content: text_content,
-                                                type: :PLAIN_TEXT
-      sentiment = response.document_sentiment
+      issues.each do |i|
+        text_content = i[:comment_body]
 
-      markdown "Score: #{sentiment.score}"
+        response     = language.analyze_sentiment(content: text_content, type: :PLAIN_TEXT)
+        sentiment    = response.document_sentiment
+
+        # markdown(text_content)
+        markdown("Username: #{i[:username]}\nMessage: #{text_content}\nScore: #{sentiment.score}\n")
+      end
+    end
+
+    private
+
+    def remove_default_comments(pr_comments)
+      pr_comments.reject { |c| c.body.include?('<!--') }
+    end
+
+    def create_comments_hash(pr_comments)
+      pr_comments.collect do |c|
+        {
+          username: c.user.login,
+          comment_id: c.id,
+          comment_body: c.body
+        }
+      end
     end
   end
 end

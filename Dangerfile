@@ -14,6 +14,6 @@ jira.check(
 junit.parse('fastlane/reports/junit.xml')
 junit.report
 
-sentiment.warn_on_mondays
+# sentiment.warn_on_mondays
 
-# sentiment.analyze
+sentiment.analyze
