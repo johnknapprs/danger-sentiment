@@ -81,7 +81,7 @@ module Danger
 
         formatted_response = formatted_response.join("\n")
 
-        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n#{formatted_response}\n")
+        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{formatted_response}\n")
       end
     end
 
