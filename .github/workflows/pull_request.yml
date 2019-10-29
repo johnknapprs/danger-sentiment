@@ -18,13 +18,19 @@ jobs:
       run: gem install bundler
     - name: Bundle Install
       run: bundle install
+    # - uses: actions-hub/gcloud@master
+    #   name: Setup gcloud Auth
+    #   env:
+    #     PROJECT_ID: danger-sentiment
+    #     APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
     - uses: actions-hub/gcloud@master
-      name: Setup gcloud Auth
       env:
         PROJECT_ID: danger-sentiment
-        APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
-    - name: Run Tests for PR
-      run: bundle exec fastlane pipeline --verbose
-      env:
-        DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
-        SLACK_URL: ${{ secrets.SLACK_URL }}
+        APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      with:
+        args: info
+    # - name: Run Tests for PR
+    #   run: bundle exec fastlane pipeline --verbose
+    #   env:
+    #     DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+    #     SLACK_URL: ${{ secrets.SLACK_URL }}
