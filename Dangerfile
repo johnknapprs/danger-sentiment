@@ -32,4 +32,3 @@ rubocop.lint(inline_comment: true)
 
 sentiment.analyze
 
-slack.notify(channel: '#johnny-junk-drawer')
