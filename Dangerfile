@@ -11,9 +11,11 @@ jira.check(
   skippable: true
 )
 
-junit.parse('fastlane/reports/junit.xml')
-junit.report
+Dir['fastlane/reports/*.xml'].each do |file|
+  junit.parse(file)
+  junit.report
+end
 
 # sentiment.warn_on_mondays
 
-sentiment.analyze
+# sentiment.analyze

@@ -20,6 +20,21 @@ or alternatively using `brew cask install fastlane`
 fastlane pipeline
 ```
 Execute All Rake Tasks
+### lint_test
+```
+fastlane lint_test
+```
+Execute Rubocop Linting
+### unit_test
+```
+fastlane unit_test
+```
+Execute Unit Tests
+### rspec_test
+```
+fastlane rspec_test
+```
+Execute Rspec Tests
 
 ----
 

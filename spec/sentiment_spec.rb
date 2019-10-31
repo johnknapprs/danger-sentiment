@@ -34,10 +34,6 @@ module Danger
 
         expect(@dangerfile.status_report[:warnings]).to eq([])
       end
-
-      it 'Checks for credentials json file' do
-        @my_plugin.credentials_json
-      end
     end
   end
 end

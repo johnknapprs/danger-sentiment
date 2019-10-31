@@ -4,13 +4,14 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'awesome_print'
+gem 'catpix'
 
 gem 'danger'
 gem 'danger-jira'
 gem 'danger-junit'
+gem 'danger-rubocop'
 
 gem 'fastlane'
-gem 'fastlane-plugin-ruby'
 
-gem 'rest-client'
 gem 'rspec_junit_formatter'
+gem 'rubocop-junit-formatter'
