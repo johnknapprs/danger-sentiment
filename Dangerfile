@@ -17,8 +17,13 @@ rspec_cmd = rspec_cmd.join(' ')
 system(rspec_cmd)
 
 # Post rspec results to GitHub
-junit.parse('rspec_junit.xml')
-junit.report
+rspec_test_report = 'rspec_junit.xml'
+if File.exist?(rspec_test_report)
+  junit.parse(rspec_test_report)
+  junit.report
+else
+  message("Unable to find gradle report at #{rspec_test_report}. No test results found")
+end
 
 # Jira Issue Linking
 jira.check(
@@ -31,10 +36,6 @@ jira.check(
   skippable: true
 )
 
-# Check plugin with Danger's own linter
-system('bundle exec danger plugins lint')
-
 rubocop.lint(inline_comment: true)
 
 sentiment.analyze
-
