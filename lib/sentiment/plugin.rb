@@ -51,36 +51,36 @@ module Danger
     # Will post a table of results per message/user
 
     def analyze
-      require 'awesome_print'
+      # require 'awesome_print'
 
-      repo_name = github.pr_json.base.repo.full_name
+      # repo_name = github.pr_json.base.repo.full_name
 
-      issues = github.api.issue_comments(repo_name, 1)
-      issues = remove_default_comments(issues)
-      issues = create_comments_hash(issues)
+      # issues = github.api.issue_comments(repo_name, 1)
+      # issues = remove_default_comments(issues)
+      # issues = create_comments_hash(issues)
 
       # warn('found key.json in home directory, attempting to authenticate') unless credentials_json
 
-      issues.each do |i|
-        require 'rest-client'
+      # issues.each do |i|
+      #   require 'rest-client'
 
-        text_content = i[:comment_body]
+      #   text_content = i[:comment_body]
 
-        response = RestClient.post "https://apis.paralleldots.com/v4/sentiment", { api_key: ENV['PARALLEL_DOTS_API_KEY'], text: text_content }
-        response = JSON.parse(response)
+      #   response = RestClient.post "https://apis.paralleldots.com/v4/sentiment", { api_key: ENV['PARALLEL_DOTS_API_KEY'], text: text_content }
+      #   response = JSON.parse(response)
 
-        formatted_response = []
-        formatted_response << "| sentiment | score |"
-        formatted_response << "|---|---|"
+      #   formatted_response = []
+      #   formatted_response << "| sentiment | score |"
+      #   formatted_response << "|---|---|"
 
-        formatted_response << response['sentiment'].map do |k, v|
-          "| #{k} | #{v} |"
-        end
+      #   formatted_response << response['sentiment'].map do |k, v|
+      #     "| #{k} | #{v} |"
+      #   end
 
-        formatted_response = formatted_response.join("\n")
+      #   formatted_response = formatted_response.join("\n")
 
-        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{formatted_response}\n")
-      end
+      #   markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{formatted_response}\n")
+      # end
     end
 
     private

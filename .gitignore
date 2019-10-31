@@ -4,6 +4,4 @@ pkg
 .yardoc
 
 Gemfile.lock
-
-fastlane/report.xml
-fastlane/reports/**
+rspec_junit.xml
