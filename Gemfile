@@ -9,6 +9,7 @@ gem 'danger'
 gem 'danger-jira'
 gem 'danger-junit'
 gem 'danger-rubocop'
+gem 'danger-slack'
 
 gem 'rspec_junit_formatter'
 gem 'rubocop-junit-formatter'

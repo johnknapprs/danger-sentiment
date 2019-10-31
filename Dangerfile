@@ -29,6 +29,7 @@ jira.check(
 system('bundle exec danger plugins lint')
 
 rubocop.lint(inline_comment: true)
-# sentiment.warn_on_mondays
 
 sentiment.analyze
+
+slack.notify(channel: '#johnny-junk-drawer')
