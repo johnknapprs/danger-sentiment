@@ -1,5 +1,11 @@
 # Rules for PullRequests using danger.systems/ruby
 
+# Always require a description of work
+if github.pr_body.length < 5
+  fail "Please provide a summary in the Pull Request description"
+end
+
+# Execute RSpec Tests
 rspec_cmd = []
 rspec_cmd << 'bundle exec rspec'
 rspec_cmd << '--failure-exit-code 0'
