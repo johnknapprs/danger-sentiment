@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'awesome_print'
-gem 'catpix'
 
 gem 'danger'
 gem 'danger-jira'

@@ -1,9 +1,6 @@
 # Fastlane automation for giggles
 
 before_all do
-  require 'catpix'
-
-  Catpix.print_image('liatrio.jpg')
 end
 
 desc('Execute All Rake Tasks')
