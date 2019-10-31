@@ -4,3 +4,4 @@ pkg
 .yardoc
 
 Gemfile.lock
+rspec_junit.xml

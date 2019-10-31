@@ -210,12 +210,14 @@ Layout/SpaceAroundOperators:
     - '**/spec/actions_specs/xcodebuild_spec.rb'
 
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.6
   Include:
+    - '**/*.rb'
     - '**/fastlane/Fastfile'
+    - 'Gemfile'
+    - '*.gemspec'
   Exclude:
     - '**/lib/assets/custom_action_template.rb'
-    - './vendor/**/*'
 
 # They have not to be snake_case
 Naming/FileName:

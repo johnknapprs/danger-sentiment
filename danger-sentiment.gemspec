@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.version       = Sentiment::VERSION
   spec.authors       = ['John Knapp']
   spec.email         = ['knappj2@gmail.com']
-  spec.description   = 'A short description of danger-sentiment.'
-  spec.summary       = 'A longer description of danger-sentiment.'
-  spec.homepage      = 'https://github.com/johnknapprs/danger-sentiment'
+  spec.description   = 'Stop saying "you\'re an asshole" in code review'
+  spec.summary       = 'Sentiment Analysis using Google Cloud Engine'
+  spec.homepage      = 'https://gitlab.com/petrosichor/danger-sentiment'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
@@ -18,25 +18,25 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'danger-plugin-api', '~> 1.0'
-  spec.add_runtime_dependency 'google-cloud-language', '~> 0.34.0'
+  spec.add_runtime_dependency 'rest-client'
 
   # General ruby development
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake', '~> 10.0'
 
   # Testing support
-  spec.add_development_dependency 'rspec', '~> 3.4'
+  spec.add_development_dependency 'rspec' # , '~> 3.4'
 
   # Linting code and docs
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'yard'
 
   # Makes testing easy via `bundle exec guard`
-  spec.add_development_dependency 'guard', '~> 2.14'
-  spec.add_development_dependency 'guard-rspec', '~> 4.7'
+  spec.add_development_dependency 'guard' # , '~> 2.14'
+  spec.add_development_dependency 'guard-rspec' # , '~> 4.7'
 
   # If you want to work on older builds of ruby
-  spec.add_development_dependency 'listen', '3.0.7'
+  spec.add_development_dependency 'listen' # , '3.0.7'
 
   # This gives you the chance to run a REPL inside your tests
   # via:
