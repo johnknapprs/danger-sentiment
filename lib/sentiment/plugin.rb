@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Danger
-  require "google/cloud/language"
-
   # This is your plugin class. Any attributes or methods you expose here will
   # be available from within your Dangerfile.
   #
