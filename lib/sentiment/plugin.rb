@@ -59,15 +59,17 @@ module Danger
         response = RestClient.post(
           'https://apis.paralleldots.com/v4/sentiment',
           {
-            api_key: @api_token,
+            api_key: ENV['PARALLEL_DOTS_API_KEY'],
             text: text_content
           }
         )
 
+        response = JSON.parse(response)
+        pp response
         formatted_response = []
         formatted_response << '| sentiment | score |'
         formatted_response << '|---|---|'
-        formatted_response << add_response_to_table(JSON.parse(response))
+        formatted_response << add_response_to_table(response)
 
         formatted_response = formatted_response.join("\n")
 
