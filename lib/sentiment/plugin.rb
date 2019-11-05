@@ -11,33 +11,28 @@ module Danger
   #
   # You should replace these comments with a public description of your library.
   #
-  # @example Ensure people are well warned about merging on Mondays
+  # @example Analyze all comments made on Pull Request
   #
-  #          my_plugin.warn_on_mondays
+  #          sentiment.analyze
   #
-  # @see  John Knapp/danger-sentiment
-  # @tags monday, weekends, time, rattata
+  # @see  johnknapprs/danger-sentiment
+  # @tags sentiment, tone, language
   #
   class DangerSentiment < Plugin
     # An attribute that you can read/write from your Dangerfile
     #
-    # @return   [Array<String>]
-    attr_accessor :my_attribute
+    # @return   [String]
+    attr_accessor :api_token
 
     # A method that you can call from your Dangerfile
-    # @return   [Array<String>]
+    # @return   [String]
     #
-
     class MissingConfiguredError < StandardError
       def initialize(msg = 'You must call sentiment.configure before sentiment.evaluate can be used')
         super
-      end
-    end
 
-    # This is a descriptiong of this method
-    # @return  [void]
-    def credentials_json(value = "#{ENV['HOME']}/key.json")
-      File.exist?(value)
+        @api_token = ENV['PARALLEL_DOTS_API_KEY']
+      end
     end
 
     # This is a descriptiong of this method
@@ -47,43 +42,48 @@ module Danger
       warn "Trying to merge code on a Monday" if Date.today.wday == 1
     end
 
-    # Analyze all PR issues
-    # Will post a table of results per message/user
+    # Analyze all PullRequest Comments and post results
+    # @return [String]
+    #
 
     def analyze
-      # require 'awesome_print'
+      require 'rest-client'
 
-      # repo_name = github.pr_json.base.repo.full_name
+      issues = github.api.issue_comments(respository_name, 1)
+      issues = remove_default_comments(issues)
+      issues = create_comments_hash(issues)
 
-      # issues = github.api.issue_comments(repo_name, 1)
-      # issues = remove_default_comments(issues)
-      # issues = create_comments_hash(issues)
+      issues.each do |i|
+        text_content = i[:comment_body]
 
-      # warn('found key.json in home directory, attempting to authenticate') unless credentials_json
+        response = RestClient.post(
+          'https://apis.paralleldots.com/v4/sentiment',
+          {
+            api_key: @api_token,
+            text: text_content
+          }
+        )
 
-      # issues.each do |i|
-      #   require 'rest-client'
+        formatted_response = []
+        formatted_response << '| sentiment | score |'
+        formatted_response << '|---|---|'
+        formatted_response << add_response_to_table(JSON.parse(response))
 
-      #   text_content = i[:comment_body]
+        formatted_response = formatted_response.join("\n")
 
-      #   response = RestClient.post "https://apis.paralleldots.com/v4/sentiment", { api_key: ENV['PARALLEL_DOTS_API_KEY'], text: text_content }
-      #   response = JSON.parse(response)
-
-      #   formatted_response = []
-      #   formatted_response << "| sentiment | score |"
-      #   formatted_response << "|---|---|"
-
-      #   formatted_response << response['sentiment'].map do |k, v|
-      #     "| #{k} | #{v} |"
-      #   end
-
-      #   formatted_response = formatted_response.join("\n")
-
-      #   markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{formatted_response}\n")
-      # end
+        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{formatted_response}\n")
+      end
     end
 
     private
+
+    def respository_name
+      github.pr_json.base.repo.full_name
+    end
+
+    def add_response_to_table(response)
+      response['sentiment'].map { |k, v| "| #{k} | #{v} |" }
+    end
 
     def remove_default_comments(pr_comments)
       pr_comments.reject { |c| c.body.include?('<!--') }

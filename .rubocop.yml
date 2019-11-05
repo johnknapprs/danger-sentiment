@@ -210,7 +210,6 @@ Layout/SpaceAroundOperators:
     - '**/spec/actions_specs/xcodebuild_spec.rb'
 
 AllCops:
-  TargetRubyVersion: 2.6
   Include:
     - '**/*.rb'
     - '**/fastlane/Fastfile'

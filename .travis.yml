@@ -1,0 +1,27 @@
+language: ruby
+
+before_install:
+  - gem install bundler
+
+cache:
+  directories:
+    - bundle
+
+rvm:
+  - 2.5.3
+
+jobs:
+  include:
+    - stage: rake test
+      script: bundle exec rake specs
+    - stage: execute danger
+      if: type = pull_request
+      script: bundle exec danger
+    - stage: gem release
+      if: branch = master
+      script: echo 'Deploying to rubygems.org'
+      deploy:
+        provider: rubygems
+        gem: danger-discord
+        api_key: $RUBYGEMS_API_KEY
+        on: deploy-gem-release

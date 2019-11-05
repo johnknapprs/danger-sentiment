@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'danger-plugin-api', '~> 1.0'
-  spec.add_runtime_dependency 'rest-client'
+  spec.add_runtime_dependency 'rest-client', '~>2.1.0'
 
   # General ruby development
   spec.add_development_dependency 'bundler'
