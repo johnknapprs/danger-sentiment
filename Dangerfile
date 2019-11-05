@@ -39,3 +39,4 @@ jira.check(
 rubocop.lint(inline_comment: true)
 
 sentiment.analyze
+ 
