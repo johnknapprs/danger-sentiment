@@ -49,7 +49,7 @@ module Danger
     def analyze
       require 'rest-client'
 
-      issues = github.api.issue_comments(respository_name, 1)
+      issues = github.api.issue_comments(respository_name, github.pr_json.number)
       issues = remove_default_comments(issues)
       issues = create_comments_hash(issues)
 
@@ -65,7 +65,7 @@ module Danger
         )
 
         response = JSON.parse(response)
-        pp response
+
         formatted_response = []
         formatted_response << '| sentiment | score |'
         formatted_response << '|---|---|'
