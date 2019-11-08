@@ -71,10 +71,10 @@ module Danger
         )
 
         response = JSON.parse(response)
-        result << "Username: #{i[:username]}\n\nMessage: #{text_content}\n\n#{format_response(response)}\n"
+        result << "Username: #{i[:username]}\n\nMessage: #{text_content}\n#{format_response(response)}\n"
       end
 
-      result.join
+      result.join("\n")
     end
 
     private
