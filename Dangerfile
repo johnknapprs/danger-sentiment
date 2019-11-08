@@ -1,6 +1,6 @@
 # Always require a description of work
 if github.pr_body.length < 5
-  fail "Please provide a summary in the Pull Request description"
+  warn 'Please provide a summary in the Pull Request description'
 end
 
 # Jira Issue Linking
