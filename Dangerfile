@@ -19,4 +19,4 @@ jira.check(
 # Rubocop Linter
 rubocop.lint(inline_comment: true)
 
-sentiment.post_analysis_table
+sentiment.post_analysis
