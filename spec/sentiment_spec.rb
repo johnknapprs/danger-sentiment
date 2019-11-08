@@ -17,7 +17,7 @@ module Danger
         allow(@my_plugin.github).to receive(:pr_json).and_return(json)
       end
 
-      it 'Warns on a monday' do
+      it 'Warns on a mondays' do
         monday_date = Date.parse('2016-07-11')
         allow(Date).to receive(:today).and_return monday_date
 

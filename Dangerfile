@@ -1,18 +1,7 @@
-# Rules for PullRequests using danger.systems/ruby
-
-rspec_cmd = []
-rspec_cmd << 'bundle exec rspec'
-rspec_cmd << '--failure-exit-code 0'
-rspec_cmd << '--no-drb'
-rspec_cmd << '--require rspec_junit_formatter --format RspecJunitFormatter'
-rspec_cmd << '--out rspec_junit.xml'
-rspec_cmd = rspec_cmd.join(' ')
-
-system(rspec_cmd)
-
-# Post rspec results to GitHub
-junit.parse('rspec_junit.xml')
-junit.report
+# Always require a description of work
+if github.pr_body.length < 5
+  fail "Please provide a summary in the Pull Request description"
+end
 
 # Jira Issue Linking
 jira.check(
@@ -25,10 +14,7 @@ jira.check(
   skippable: true
 )
 
-# Check plugin with Danger's own linter
-system('bundle exec danger plugins lint')
-
+# Rubocop Linter
 rubocop.lint(inline_comment: true)
 
-sentiment.analyze
-
+sentiment.post_analysis
