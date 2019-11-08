@@ -19,6 +19,8 @@ module Danger
   # @tags sentiment, tone, language
   #
   class DangerSentiment < Plugin
+    require 'rest-client'
+
     # An attribute that you can read/write from your Dangerfile
     #
     # @return   [String]
@@ -27,32 +29,17 @@ module Danger
     # A method that you can call from your Dangerfile
     # @return   [String]
     #
-    class MissingConfiguredError < StandardError
-      def initialize(msg = 'You must call sentiment.configure before sentiment.evaluate can be used')
-        super
+    def initialize(msg = 'You must call sentiment.configure before sentiment.evaluate can be used')
+      super
 
-        @api_token = ENV['PARALLEL_DOTS_API_KEY']
-      end
-    end
-
-    # This is a descriptiong of this method
-    # https://github.com/dbgrandi/danger-prose/blob/v2.0.0/lib/danger_plugin.rb#L40#-L41
-    # @return  [void]
-    def warn_on_mondays
-      warn "Trying to merge code on a Monday" if Date.today.wday == 1
+      @api_token = ENV['PARALLEL_DOTS_API_KEY']
     end
 
     # Analyze all PullRequest Comments and post results
     # @return [String]
     #
 
-    def analyze
-      require 'rest-client'
-
-      issues = github.api.issue_comments(respository_name, github.pr_json.number)
-      issues = remove_default_comments(issues)
-      issues = create_comments_hash(issues)
-
+    def post_analysis
       issues.each do |i|
         text_content = i[:comment_body]
 
@@ -65,40 +52,61 @@ module Danger
         )
 
         response = JSON.parse(response)
-
-        formatted_response = []
-        formatted_response << '| sentiment | score |'
-        formatted_response << '|---|---|'
-        formatted_response << add_response_to_table(response)
-
-        formatted_response = formatted_response.join("\n")
-
-        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{formatted_response}\n")
+        markdown("Username: #{i[:username]}\nMessage: #{text_content}\n\n#{format_response(response)}\n")
       end
+    end
+
+    def formatted_analysis
+      result = []
+
+      issues.each do |i|
+        text_content = i[:comment_body]
+
+        response = RestClient.post(
+          'https://apis.paralleldots.com/v4/sentiment',
+          {
+            api_key: api_token,
+            text: text_content
+          }
+        )
+
+        response = JSON.parse(response)
+        result << "Username: #{i[:username]}\n\nMessage: #{text_content}\n\n#{format_response(response)}\n"
+      end
+
+      result.join
     end
 
     private
 
-    def respository_name
-      github.pr_json.base.repo.full_name
+    def format_response(data)
+      table = []
+      table << '| sentiment | score |'
+      table << '|---|---|'
+      table << data['sentiment'].map { |k, v| "| #{k} | #{v} |" }
+
+      table.join("\n")
     end
 
-    def add_response_to_table(response)
-      response['sentiment'].map { |k, v| "| #{k} | #{v} |" }
-    end
+    # Array of hashes for posted Issues { username: , comment_id: comment_body: }
+    #
+    # @return   [Array<Hash>]
 
-    def remove_default_comments(pr_comments)
-      pr_comments.reject { |c| c.body.include?('<!--') }
-    end
-
-    def create_comments_hash(pr_comments)
-      pr_comments.collect do |c|
+    def issues
+      @issues ||= github.api
+                        .issue_comments(respository_name, github.pr_json.number)
+                        .reject { |c| c.body.include?('<!--') }
+                        .collect do |c|
         {
           username: c.user.login,
           comment_id: c.id,
           comment_body: c.body
         }
       end
+    end
+
+    def respository_name
+      github.pr_json.base.repo.full_name
     end
   end
 end
